@@ -11,11 +11,11 @@ app.set('view engine', 'ejs')
 app.use(bp.urlencoded({ extended: true }))
 app.use(express.static('public'))
 app.use('/', shop)
-app.use('/admin', admin.routes)
+app.use('/admin', admin)
 app.use((req, res) => {
   res.render('404.ejs', { pageTitle: 'Page Not Found' })
 })
 
-app.listen(3001, () => {
-  console.log('3001')
+app.listen(3003, () => {
+  console.log('3003')
 })
