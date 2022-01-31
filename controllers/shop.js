@@ -4,7 +4,7 @@ exports.getProducts = (req, res, next) => {
   Product.fetchAll((products) => {
     res.render('shop/product-list', {
       prods: products,
-      pageTitle: 'Products',
+      pageTitle: 'All Products',
       path: '/products',
     })
   })
@@ -27,6 +27,14 @@ exports.getCart = (req, res, next) => {
   })
 }
 
+exports.getPostCart = (req, res, next) => {
+  console.log(req.body.productId)
+  res.render('shop/cart', {
+    pageTitle: 'Your Cart',
+    path: '/cart',
+  })
+}
+
 exports.getCheckout = (req, res, next) => {
   res.render('shop/checkout', {
     pageTitle: 'Checkouts',
@@ -38,5 +46,16 @@ exports.getOrders = (req, res, next) => {
   res.render('shop/orders', {
     pageTitle: 'Orders',
     path: '/orders',
+  })
+}
+
+exports.getPorductId = (req, res, next) => {
+  const prodId = req.params.productId
+  Product.getDetail(prodId, (product) => {
+    res.render('shop/product-detail', {
+      pageTitle: product.title,
+      product: product,
+      path: '/products',
+    })
   })
 }
