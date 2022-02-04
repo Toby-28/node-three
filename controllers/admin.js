@@ -47,3 +47,10 @@ exports.getProducts = (req, res, next) => {
     })
   })
 }
+
+exports.deleteProduct = (req, res, next) => {
+  const id = req.params.productId
+  const product = new Product()
+  product.delete(id)
+  res.redirect('/')
+}
