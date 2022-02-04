@@ -16,7 +16,8 @@ const getProducts = (cb) => {
 }
 
 module.exports = class Product {
-  constructor(t, i, p, d) {
+  constructor(id, t, i, p, d) {
+    this.id = id
     this.title = t
     this.imgLink = i
     this.price = p
@@ -24,13 +25,23 @@ module.exports = class Product {
   }
 
   save() {
-    this.id = Math.random().toString()
-    getProducts((products) => {
-      products.unshift(this)
-      fs.writeFile(p, JSON.stringify(products), (err) => {
-        console.log(err)
+    if (this.id) {
+      getProducts((products) => {
+        const index = products.findIndex((p) => p.id === this.id)
+        products[index] = this
+        fs.writeFile(p, JSON.stringify(products), (err) => {
+          console.log(`Product uytgedendaki => ${err}`)
+        })
       })
-    })
+    } else {
+      this.id = Math.random().toString()
+      getProducts((products) => {
+        products.unshift(this)
+        fs.writeFile(p, JSON.stringify(products), (err) => {
+          console.log(`Product gosandaky => ${err}`)
+        })
+      })
+    }
   }
 
   static fetchAll(cb) {

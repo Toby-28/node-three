@@ -15,12 +15,10 @@
                 <h2>
                     <%= product.price%>
                 </h2>
-                <h2>
+                <p>
                     <%= product.description%>
-                </h2>
-                <div>
-                    <%- include('../includes/add-to-cart', {product: product}) %>
-                </div>
+                </p>
+                <%- include('../includes/add-to-cart', {product: product}) %>
             </div>
 
             <%- include('../includes/end.ejs') %>

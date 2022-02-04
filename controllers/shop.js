@@ -53,7 +53,7 @@ exports.getOrders = (req, res, next) => {
   })
 }
 
-exports.getPorductId = (req, res, next) => {
+exports.getPorductDetail = (req, res, next) => {
   const prodId = req.params.productId
   Product.getDetail(prodId, (product) => {
     res.render('shop/product-detail', {
