@@ -9,7 +9,19 @@ module.exports = class Product {
     this.description = d
   }
 
-  save() {}
+  save() {
+    if (this.id) {
+      return mysqlPool.execute(
+        `update products set title=?, imgLink=?, price=?, description=? where id=?`,
+        [this.title, this.imgLink, this.price, this.description]
+      )
+    } else {
+      return mysqlPool.execute(
+        'insert into products(title, imgLink, price, description) values(?,?,?,?)',
+        [this.title, this.imgLink, this.price, this.description]
+      )
+    }
+  }
 
   delete(id) {}
 

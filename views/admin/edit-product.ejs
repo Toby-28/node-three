@@ -22,14 +22,13 @@
                     </div>
                     <div class="form-control">
                         <label for="price">Price</label>
-                        <input type="number" name="price" id="price"
+                        <input type="number" name="price" id="price" step="0.01"
                             value="<% if(editMode) { %><%= product.price %><% } %>">
                     </div>
                     <div class="form-control">
                         <label for="description">Description</label>
                         <textarea name="description" id="description" cols="40" rows="10"
-                            placeholder="Provide some dummy text..."><% if(editMode) {%><%= product.description %><% } %>
-                        </textarea>
+                            placeholder="Provide some dummy text..."><% if(editMode) {%><%= product.description %><% } %></textarea>
                     </div>
                     <button class="btn" type="submit">
                         <% if(editMode===true ){ %>Save Product <% } else{ %> Add Product <% } %>
