@@ -4,6 +4,7 @@ const app = express()
 const shop = require('./routes/shop')
 const admin = require('./routes/admin')
 const { get404 } = require('./controllers/error')
+const mysqlPool = require('./util/mysqldb')
 
 app.set('views', 'views')
 app.set('view engine', 'ejs')

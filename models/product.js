@@ -1,19 +1,4 @@
-const fs = require('fs')
-const path = require('path')
-const p = path.join(
-  path.dirname(process.mainModule.filename),
-  'data',
-  'products.json'
-)
-const getProducts = (cb) => {
-  fs.readFile(p, (err, fileContent) => {
-    if (!err) {
-      cb(JSON.parse(fileContent))
-    } else {
-      cb([])
-    }
-  })
-}
+const mysqlPool = require('../util/mysqldb')
 
 module.exports = class Product {
   constructor(id, t, i, p, d) {
@@ -24,43 +9,15 @@ module.exports = class Product {
     this.description = d
   }
 
-  save() {
-    if (this.id) {
-      getProducts((products) => {
-        const index = products.findIndex((p) => p.id === this.id)
-        products[index] = this
-        fs.writeFile(p, JSON.stringify(products), (err) => {
-          console.log(`Product uytgedendaki => ${err}`)
-        })
-      })
-    } else {
-      this.id = Math.random().toString()
-      getProducts((products) => {
-        products.unshift(this)
-        fs.writeFile(p, JSON.stringify(products), (err) => {
-          console.log(`Product gosandaky => ${err}`)
-        })
-      })
-    }
+  save() {}
+
+  delete(id) {}
+
+  static fetchAll() {
+    return mysqlPool.execute('select * from products')
   }
 
-  delete(id) {
-    getProducts((products) => {
-      const filtered = products.filter((p) => p.id !== id)
-      fs.writeFile(p, JSON.stringify(filtered), (err) => {
-        console.log(`Product pozlandaky => ${err}`)
-      })
-    })
-  }
-
-  static fetchAll(cb) {
-    getProducts(cb)
-  }
-
-  static getDetail(id, cb) {
-    getProducts((products) => {
-      const product = products.find((product) => product.id === id)
-      cb(product)
-    })
+  static getDetail(id) {
+    return mysqlPool.execute(`select * from products where id=${id}`)
   }
 }
