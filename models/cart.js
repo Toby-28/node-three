@@ -1,3 +1,18 @@
+const sequelize = require('../util/sequelize')
+const Sequelize = require('sequelize')
+
+const Cart = sequelize.define('cart', {
+  id: {
+    type: INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true,
+  },
+})
+// =============================================
+// =============================================
+// =============================================
+// =============================================
 const fs = require('fs')
 const path = require('path')
 

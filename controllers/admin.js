@@ -2,11 +2,14 @@ const Product = require('../models/product')
 
 exports.pushProduct = (req, res, next) => {
   const { title, imgLink, price, description } = req.body
-  const product = new Product(null, title, imgLink, price, description)
-  product
-    .save()
-    .then((message) => {
-      console.log(message)
+  Product.create({
+    title: title,
+    imgLink: imgLink,
+    price: price,
+    description: description,
+  })
+    .then((result) => {
+      console.log(result)
       res.redirect('/products')
     })
     .catch((err) => {
@@ -17,12 +20,12 @@ exports.pushProduct = (req, res, next) => {
 exports.getEditProduct = (req, res, next) => {
   const id = req.params.productId
   if (req.query.editMode) {
-    Product.getDetail(id)
-      .then(([row, fieldData]) => {
+    Product.findById(id)
+      .then((row) => {
         res.render('admin/edit-product', {
           pageTitle: 'Edit Product',
           path: '/admin/edit-product',
-          product: row[0],
+          product: row,
           editMode: true,
         })
       })
@@ -41,22 +44,26 @@ exports.getEditProduct = (req, res, next) => {
 exports.editProduct = (req, res, next) => {
   const id = req.params.productId
   const { title, imgLink, price, description } = req.body
-  const updatedProduct = new Product(id, title, imgLink, price, description)
-  updatedProduct
-    .save()
-    .then((message) => {
-      console.log(message)
+  Product.findById(id)
+    .then((product) => {
+      product.title = title
+      product.imgLink = imgLink
+      product.price = price
+      product.description = description
+      return product.save()
+    })
+    .then((result) => {
+      console.log(result)
       res.redirect('/')
     })
     .catch((err) => {
       console.log(err)
     })
-  res.redirect('/')
 }
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
-    .then(([rows, fieldData]) => {
+  Product.findAll()
+    .then((rows) => {
       res.render('admin/products', {
         pageTitle: 'Admin Products',
         path: '/admin/products',
@@ -70,7 +77,15 @@ exports.getProducts = (req, res, next) => {
 
 exports.deleteProduct = (req, res, next) => {
   const id = req.params.productId
-  const product = new Product()
-  product.delete(id)
-  res.redirect('/')
+  Product.findById(id)
+    .then((row) => {
+      return row.destroy()
+    })
+    .then((result) => {
+      console.log(result)
+      res.redirect('/')
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 }
