@@ -14,6 +14,15 @@ app.set('view engine', 'ejs')
 // midllewares
 app.use(bp.urlencoded({ extended: true }))
 app.use(express.static('public'))
+app.use((req, res, next) => {
+  User.findById(1)
+    .then((user) => {
+      req.user = user
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+})
 app.use('/', shop)
 app.use('/admin', admin)
 app.use(get404)
@@ -27,26 +36,19 @@ sequelize
   // .sync({ force: true })
   .sync()
   .then(() => {
-    User.findById(1)
-      .then((row) => {
-        if (!row) {
-          User.create({
-            name: 'Hushnudbek',
-            email: 'tobymarshal2802@gmail.com',
-          })
-            .then(() => {
-              app.listen(3003, () => {
-                console.log('3003')
-              })
-            })
-            .catch((err) => {
-              console.log(err)
-            })
-        }
+    return User.findByPk(1)
+  })
+  .then((user) => {
+    if (!user) {
+      return User.create({
+        name: 'Hushnudbek',
+        email: 'tobymarshal2802@gmail.com',
       })
-      .catch((err) => {
-        console.log(err)
-      })
+    }
+    return user
+  })
+  .then(() => {
+    app.listen(3003)
   })
   .catch((err) => {
     console.log(err)
