@@ -2,6 +2,7 @@ const express = require('express')
 const {
   getIndex,
   getProducts,
+  deleteCartItem,
   getPorductDetail,
   getCart,
   postCart,
@@ -12,7 +13,7 @@ const router = express.Router()
 
 router.get('/', getIndex)
 router.get('/products', getProducts)
-router.get('/delete')
+router.post('/delete-cart-item', deleteCartItem)
 router.get('/products/:productId', getPorductDetail)
 router.get('/cart', getCart)
 router.post('/cart', postCart)

@@ -77,7 +77,11 @@ exports.getProducts = (req, res, next) => {
 
 exports.deleteProduct = (req, res, next) => {
   const id = req.params.productId
-  Product.destroy({ where: { id: id } })
+  req.user
+    .getProducts({ where: { id: id } })
+    .then((products) => {
+      return products[0].destroy()
+    })
     .then(() => {
       res.redirect('/')
     })

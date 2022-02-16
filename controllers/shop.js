@@ -1,5 +1,4 @@
 const Product = require('../models/product')
-const Cart = require('../models/cart')
 
 // Exports for Product Model
 
@@ -103,3 +102,7 @@ exports.postCart = (req, res, next) => {
 }
 
 exports.getOrders = (req, res, next) => {}
+
+exports.deleteCartItem = (req, res, next) => {
+  const id = req.body.productId
+}
