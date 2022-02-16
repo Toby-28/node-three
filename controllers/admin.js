@@ -2,14 +2,14 @@ const Product = require('../models/product')
 
 exports.pushProduct = (req, res, next) => {
   const { title, imgLink, price, description } = req.body
-  Product.create({
-    title: title,
-    imgLink: imgLink,
-    price: price,
-    description: description,
-  })
-    .then((result) => {
-      console.log(result)
+  req.user
+    .createProduct({
+      title: title,
+      imgLink: imgLink,
+      price: price,
+      description: description,
+    })
+    .then(() => {
       res.redirect('/products')
     })
     .catch((err) => {
@@ -20,7 +20,7 @@ exports.pushProduct = (req, res, next) => {
 exports.getEditProduct = (req, res, next) => {
   const id = req.params.productId
   if (req.query.editMode) {
-    Product.findById(id)
+    Product.findByPk(id)
       .then((row) => {
         res.render('admin/edit-product', {
           pageTitle: 'Edit Product',
@@ -44,7 +44,7 @@ exports.getEditProduct = (req, res, next) => {
 exports.editProduct = (req, res, next) => {
   const id = req.params.productId
   const { title, imgLink, price, description } = req.body
-  Product.findById(id)
+  Product.findByPk(id)
     .then((product) => {
       product.title = title
       product.imgLink = imgLink
@@ -52,8 +52,7 @@ exports.editProduct = (req, res, next) => {
       product.description = description
       return product.save()
     })
-    .then((result) => {
-      console.log(result)
+    .then(() => {
       res.redirect('/')
     })
     .catch((err) => {
@@ -62,7 +61,8 @@ exports.editProduct = (req, res, next) => {
 }
 
 exports.getProducts = (req, res, next) => {
-  Product.findAll()
+  req.user
+    .getProducts()
     .then((rows) => {
       res.render('admin/products', {
         pageTitle: 'Admin Products',
@@ -77,12 +77,8 @@ exports.getProducts = (req, res, next) => {
 
 exports.deleteProduct = (req, res, next) => {
   const id = req.params.productId
-  Product.findById(id)
-    .then((row) => {
-      return row.destroy()
-    })
-    .then((result) => {
-      console.log(result)
+  Product.destroy({ where: { id: id } })
+    .then(() => {
       res.redirect('/')
     })
     .catch((err) => {

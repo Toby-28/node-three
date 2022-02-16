@@ -8,7 +8,7 @@
                 <% if(cartProducts.length>0) { %>
                     <% cartProducts.forEach(product=>{ %>
                         <li>
-                            <%= product.title %> (<%= product.quantity %>)
+                            <%= product.title %> (<%= product.cartItem.quantity %>)
                         </li>
                         <% }) %>
                             <% }else{ %>
