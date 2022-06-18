@@ -1,8 +1,13 @@
 const Sequelize = require('sequelize')
 
-const sequelize = new Sequelize('node-complete', 'root', 'hushnud.22', {
-  dialect: 'mysql',
-  host: 'localhost',
-})
+const sequelize = new Sequelize(
+  'node-complete-ecommerce',
+  'postgres',
+  'hushnud.22',
+  {
+    dialect: 'postgres',
+    host: 'localhost',
+  }
+)
 
 module.exports = sequelize
